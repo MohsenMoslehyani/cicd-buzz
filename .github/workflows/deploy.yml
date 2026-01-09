@@ -62,3 +62,12 @@ jobs:
       - name: Deploy to App Engine (verbose)
         run: |
           gcloud app deploy app.yaml --quiet --promote --version v1 --verbosity=debug
+          
+      - name: Show recent Cloud Build failures (if any)
+        if: failure()
+        run: |
+          echo "Recent Cloud Build builds:"
+          gcloud builds list --limit=5 --sort-by=~createTime --format="table(id,status,createTime,source.repoSource.repoName)"
+          echo "Most recent build log (first 200 lines):"
+          BUILD_ID=$(gcloud builds list --limit=1 --sort-by=~createTime --format="value(id)")
+          gcloud builds log "$BUILD_ID" --limit=200 || true

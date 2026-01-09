@@ -1,0 +1,12 @@
+.git
+.gitignore
+.github
+__pycache__/
+.pytest_cache/
+env/
+venv/
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+gha-creds-*.json
