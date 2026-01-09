@@ -21,15 +21,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install flake8 pytest
+
       - name: Lint with Flake8 (Quality Gate)
         run: |
           # Governance: Stop de build als codekwaliteit onvoldoende is (complexiteit > 10)
           flake8 app.py buzz tests --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 app.py buzz tests --count --max-complexity=10 --max-line-length=127 --statistics
+
       - name: Test with Pytest (Compliance Gate)
         run: |
           # Governance: Stop de build als functionele eisen (tests) falen
           python -m pytest tests/test_generator.py
+
   deploy-to-gcp:
     needs: build-and-test
     runs-on: ubuntu-latest
@@ -45,25 +48,17 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
- Check failure on line 50 in .github/workflows/deploy.yml
-
-
-GitHub Actions
-/ .github/workflows/deploy.yml
-Invalid workflow file
-
-You have an error in your yaml syntax on line 50
       - name: Debug App Engine state
         run: |
           gcloud --version
           gcloud config list
           gcloud app describe
           ls -la
-          
-        - name: Verify required APIs
+
+      - name: Verify required APIs
         run: |
-            gcloud services list --enabled --format="value(config.name)" | sort | egrep "appengine|cloudbuild|artifactregistry|iam|storage"
-  
+          gcloud services list --enabled --format="value(config.name)" | sort | egrep "appengine|cloudbuild|artifactregistry|iam|storage" || true
+
       - name: Deploy to App Engine (verbose)
         run: |
           gcloud app deploy app.yaml --quiet --promote --version v1 --verbosity=debug
