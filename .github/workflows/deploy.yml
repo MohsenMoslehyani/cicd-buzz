@@ -61,7 +61,7 @@ jobs:
 
       - name: Deploy to App Engine (verbose)
         run: |
-          gcloud app deploy app.yaml --quiet --promote --version v1 --verbosity=debug
+          gcloud app deploy app.yaml --quiet --no-promote --version v1 --verbosity=debug
           
       - name: Show recent Cloud Build failures (if any)
         if: failure()
