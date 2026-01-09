@@ -57,5 +57,4 @@ jobs:
           
       - name: Deploy to App Engine (verbose)
         run: |
-          gcloud config set project "${{ secrets.GCP_PROJECT_ID }}"
           gcloud app deploy app.yaml --quiet --promote --version v1 --verbosity=debug
