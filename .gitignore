@@ -1,2 +1,13 @@
-venv
+# Virtual environments
+env/
+.venv/
+venv/
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+
+# Python caches
+__pycache__/
+.pytest_cache/
 *.pyc
